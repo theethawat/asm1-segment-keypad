@@ -1,0 +1,32 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.7</VERSION>
+ <DEVICE>"ATmega328P"</DEVICE>
+ <WORKING_DIR>C:\A_Dev\Assignment1\Assignment1\Release</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc\m328pdef.inc</FILE>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc\m328Pdef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\A_Dev\Assignment1\Assignment1\Release\Assignment1.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Assignment1.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Assignment1.map</FILE>
+  <FILE>Assignment1.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <TABLE_7SEG><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>32</LINE></TABLE_7SEG>
+  <start><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>43</LINE></start>
+  <display><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>49</LINE></display>
+  <increment_group><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>61</LINE></increment_group>
+  <delay10ms><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>67</LINE></delay10ms>
+ </LABELS>
+</ASSEMBLER_INFO>
