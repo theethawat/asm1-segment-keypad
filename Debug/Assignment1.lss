@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  C:\A_Dev\Assignment1\Assignment1\main.asm Wed Feb 05 19:16:43 2020
+AVRASM ver. 2.2.7  C:\A_Dev\Assignment1\Assignment1\main.asm Wed Feb 05 22:30:38 2020
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc\m328pdef.inc'
 C:\A_Dev\Assignment1\Assignment1\main.asm(15): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\avrasm\inc\m328Pdef.inc'
@@ -1046,6 +1046,7 @@ C:\A_Dev\Assignment1\Assignment1\main.asm(15): Including file 'C:/Program Files 
                                  ; ***** END OF FILE ******************************************************
                                  .equ PIN_OUT = 0b11111111 ; 0xFF
                                  .equ PIN_IN  = 0b00000000 ; 0x00
+                                 .equ PORT_B_SETTING = 0b00000001 ; 0x01 Set 1 Out and 7 in
                                  .equ KEYPAD_PIN = 0b11111000 ; bit 0,1,2 will be input another will be output
                                  .equ INTERVAL_VAR = 100
                                  
@@ -1054,6 +1055,7 @@ C:\A_Dev\Assignment1\Assignment1\main.asm(15): Including file 'C:/Program Files 
                                  .def INTERVAL_LOOP = r18
                                  .def DISTANCE = r19
                                  .def READ_RESULT = r20
+                                 ;.def TEMP2 = r21
                                  
                                  
                                  .macro BRANCH_IF_KEYPRESS
@@ -1097,108 +1099,124 @@ C:\A_Dev\Assignment1\Assignment1\main.asm(15): Including file 'C:/Program Files 
 000014 b907                      	out DDRC,TEMP
 000015 ef08                      	ldi TEMP,KEYPAD_PIN
 000016 b90a                      	out DDRD,TEMP
+000017 e001                      	ldi TEMP,PORT_B_SETTING
+000018 b904                      	out DDRB,TEMP
                                  
-000017 e010                          ldi DATA,0x00 ; Initial Data
-000018 e000                      	ldi TEMP,0x00
-000019 c000                      	rjmp keypad_read
+000019 e010                          ldi DATA,0x00 ; Initial Data
+00001a e000                      	ldi TEMP,0x00
+00001b c000                      	rjmp keypad_read
                                  
                                  keypad_read:
                                  	;Load Row A (No press is 1)
-00001a e707                      	ldi TEMP,0b01110111 ; 3 first bit that's a input don't matter let 4th bit will 0
-00001b e030                      	ldi DISTANCE,0 
-00001c 940e 003a                 	call scan_keypad
-00001e ef0f
-00001f 1600
-000020 f4b1                      	BRANCH_IF_KEYPRESS
+00001c e707                      	ldi TEMP,0b01110111 ; 3 first bit that's a input don't matter let 4th bit will 0
+00001d e030                      	ldi DISTANCE,0 
+00001e 940e 003c                 	call scan_keypad
+000020 ef0f
+000021 1600
+000022 f4b1                      	BRANCH_IF_KEYPRESS
                                  
                                  	;Load Row B 
-000021 e60f                      	ldi TEMP,0b01101111 ; 3 first bit that's a input don't matter let 5th bit will 0
-000022 e035                      	ldi DISTANCE,5 
-000023 940e 003a                 	call scan_keypad
-000025 ef0f
-000026 1600
-000027 f479                      	BRANCH_IF_KEYPRESS
+000023 e60f                      	ldi TEMP,0b01101111 ; 3 first bit that's a input don't matter let 5th bit will 0
+000024 e035                      	ldi DISTANCE,5 
+000025 940e 003c                 	call scan_keypad
+000027 ef0f
+000028 1600
+000029 f479                      	BRANCH_IF_KEYPRESS
                                  
                                  	;Load Row C
-000028 e50f                      	ldi TEMP,0b01011111 ; 3 first bit that's a input don't matter let 6th bit will 0
-000029 e03a                      	ldi DISTANCE,10 
-00002a 940e 003a                 	call scan_keypad
-00002c ef0f
-00002d 1600
-00002e f441                      	BRANCH_IF_KEYPRESS
+00002a e50f                      	ldi TEMP,0b01011111 ; 3 first bit that's a input don't matter let 6th bit will 0
+00002b e03a                      	ldi DISTANCE,10 
+00002c 940e 003c                 	call scan_keypad
+00002e ef0f
+00002f 1600
+000030 f441                      	BRANCH_IF_KEYPRESS
                                  
                                  	;Load Row D
-00002f e30f                      	ldi TEMP,0b00111111 ; 3 first bit that's a input don't matter let 7th bit will 0
-000030 e03f                      	ldi DISTANCE,15 
-000031 940e 003a                 	call scan_keypad
-000033 ef0f
-000034 1600
-000035 f409                      	BRANCH_IF_KEYPRESS
+000031 e30f                      	ldi TEMP,0b00111111 ; 3 first bit that's a input don't matter let 7th bit will 0
+000032 e03f                      	ldi DISTANCE,15 
+000033 940e 003c                 	call scan_keypad
+000035 ef0f
+000036 1600
+000037 f409                      	BRANCH_IF_KEYPRESS
                                  
-000036 cfe3                      	rjmp keypad_read ; loop again
+000038 cfe3                      	rjmp keypad_read ; loop again
                                  
                                  keypressed:
-000037 940e 0048                 	call display_7seg ;Display IT
-000039 cfe0                      	rjmp keypad_read ; And loop of Read again
+000039 940e 004a                 	call display_7seg ;Display IT
+00003b cfe0                      	rjmp keypad_read ; And loop of Read again
                                  
                                  scan_keypad:
-00003a e1e2                      	ldi ZL,low(TABLE_KEYPAD*2)
-00003b e0f0                      	ldi ZH,high(TABLE_KEYPAD*2)
-00003c b90b                      	out PORTD,TEMP ; Output the value of ROW to scan
-00003d b149                      	in  READ_RESULT,PIND ; Read the Result of Column at the same port/pin
-00003e e007                      	ldi TEMP,0b00000111  ; Filter use only 3 LSB
-00003f 2340                      	and READ_RESULT,TEMP ; Filter Working
-000040 0f43                      	add READ_RESULT,DISTANCE ; Add Distance 
-000041 5043                      	subi READ_RESULT,3 ; Subtract the ofset
-000042 e000                      	ldi TEMP,0x00 ; Clear and Prepare for adc
-000043 0fe4                      	add ZL,READ_RESULT ; the Result will follow Keypad table
-000044 1ff0                      	adc ZH,TEMP
-000045 95c8                      	lpm ; So the Result will go to R0 and call macro
-000046 2d10                      	mov DATA,r0 ; Let the R0 Value keep in variable Data
-000047 9508                      	ret
+00003c e1e2                      	ldi ZL,low(TABLE_KEYPAD*2)
+00003d e0f0                      	ldi ZH,high(TABLE_KEYPAD*2)
+00003e b90b                      	out PORTD,TEMP ; Output the value of ROW to scan
+00003f b149                      	in  READ_RESULT,PIND ; Read the Result of Column at the same port/pin
+000040 e007                      	ldi TEMP,0b00000111  ; Filter use only 3 LSB
+000041 2340                      	and READ_RESULT,TEMP ; Filter Working
+000042 0f43                      	add READ_RESULT,DISTANCE ; Add Distance 
+000043 5043                      	subi READ_RESULT,3 ; Subtract the ofset
+000044 e000                      	ldi TEMP,0x00 ; Clear and Prepare for adc
+000045 0fe4                      	add ZL,READ_RESULT ; the Result will follow Keypad table
+000046 1ff0                      	adc ZH,TEMP
+000047 95c8                      	lpm ; So the Result will go to R0 and call macro
+000048 2d10                      	mov DATA,r0 ; Let the R0 Value keep in variable Data
+000049 9508                      	ret
                                  
                                  
                                  display_7seg:
-000048 93ef                      	push ZL
-000049 93ff                      	push ZH
-00004a 920f                      	push r0  
+00004a 93ef                      	push ZL
+00004b 93ff                      	push ZH
+00004c 920f                      	push r0  
                                  	; keep the current value of variable to stack because we want to use them 
                                  	; and it's value will be destroy
-00004b e0e2                       	ldi ZL,low(TABLE_7SEG*2) ; Load Value of 7seg Table to Register
-00004c e0f0                      	ldi ZH,high(TABLE_7SEG*2)
-00004d d001                      	rcall display
-00004e 9508                      	ret
+                                 
+00004d d004                      	rcall display
+00004e 900f                      	pop r0
+00004f 91ff                      	pop ZH
+000050 91ef                      	pop ZL
+000051 9508                      	ret
                                  
                                  display:
-00004f e00f                      	ldi TEMP, 0x0F ; Load 15 to Temp Variable
-000050 2310                      	and DATA,TEMP ; make sure value is not over than 15
-000051 e000                      	ldi TEMP,0x00 ;clear
                                  
-000052 0fe1                      	add ZL,DATA
-000053 1ff0                      	adc ZH,TEMP 
-000054 95c8                      	lpm ; Value will keep to R0
+000052 e0e2                      	ldi ZL,low(TABLE_7SEG*2) ; Load Value of 7seg Table to Register
+000053 e0f0                      	ldi ZH,high(TABLE_7SEG*2)
+000054 e00f                      	ldi TEMP, 0x0F ; Load 15 to Temp Variable
+000055 2310                      	and DATA,TEMP ; make sure value is not over than 15 	
+                                 	
+                                 	
+                                 	
+000056 e000                      	ldi TEMP,0x00 ;clear
+000057 0fe1                      	add ZL,DATA
+000058 1ff0                      	adc ZH,TEMP 
+                                 	
+000059 95c8                      	lpm ; Value will keep to R0
+00005a 9400                      	com r0 ; One Complement	
+                                 	;ldi TEMP,0xFF
+                                 	;out DDRC,TEMP
+00005b b808                      	out PORTC, r0 ; Value of R0 Show at PortB
                                  
-000055 9400                      	com r0 ; One Complement
-000056 b808                      	out PORTC, r0 ; Value of R0 Show at PortB
-000057 900f                      	pop r0
-000058 91ff                      	pop ZH
-000059 91ef                      	pop ZL
-00005a 9508                      	ret
+                                 	
                                  
-                                 
+00005c e000                      	ldi TEMP,0x00
+00005d 2d00                      	mov TEMP,r0
+00005e 7400                      	andi TEMP, 0b01000000 
+00005f 1f00                      	rol TEMP ; msb will keep to Carry second one will be msb
+000060 1f00                      	rol TEMP ; Carry will go to LSB
+000061 1f00                      	rol TEMP ; The bit we want come to LSB
+000062 b905                      	out PORTB, TEMP
+000063 9508                      	ret
                                  
                                  	; Delay Method----------
                                  increment_group:
-00005b e624                      	ldi INTERVAL_LOOP,INTERVAL_VAR
-00005c 9513                      	inc DATA
-00005d d001                      	rcall delay10ms
-00005e cff0                      	rjmp display
+000064 e624                      	ldi INTERVAL_LOOP,INTERVAL_VAR
+000065 9513                      	inc DATA
+000066 d001                      	rcall delay10ms
+000067 cfea                      	rjmp display
                                  	
                                  delay10ms:
-00005f 5021                      	subi INTERVAL_LOOP,1
-000060 3020                      	cpi	INTERVAL_LOOP,0x00
-000061 f7e9                      	brne delay10ms
-000062 cff8                      	rjmp increment_group
+000068 5021                      	subi INTERVAL_LOOP,1
+000069 3020                      	cpi	INTERVAL_LOOP,0x00
+00006a f7e9                      	brne delay10ms
+00006b cff8                      	rjmp increment_group
                                  
                                  .DSEG ; data segment
 
@@ -1218,16 +1236,16 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATmega328P" register use summary:
-x  :   0 y  :   0 z  :   0 r0 :   9 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
+x  :   0 y  :   0 z  :   0 r0 :  10 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  26 r17:   5 r18:   3 r19:   5 r20:   5 
+r13:   0 r14:   0 r15:   0 r16:  35 r17:   5 r18:   3 r19:   5 r20:   5 
 r21:   0 r22:   0 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
 r29:   0 r30:   6 r31:   6 
 Registers used: 8 out of 35 (22.9%)
 
 "ATmega328P" instruction use summary:
 .lds  :   0 .sts  :   0 adc   :   2 add   :   3 adiw  :   0 and   :   2 
-andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
+andi  :   1 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
 brcc  :   0 brcs  :   0 break :   0 breq  :   0 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
 brne  :   5 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
@@ -1236,21 +1254,21 @@ clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0
 clt   :   0 clv   :   0 clz   :   0 com   :   1 cp    :   4 cpc   :   0 
 cpi   :   1 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
 fmulsu:   0 icall :   0 ijmp  :   0 in    :   1 inc   :   1 jmp   :   0 
-ld    :   0 ldd   :   0 ldi   :  25 lds   :   0 lpm   :   6 lsl   :   0 
-lsr   :   0 mov   :   1 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :   4 pop   :   3 
-push  :   3 rcall :   2 ret   :   3 reti  :   0 rjmp  :   6 rol   :   0 
+ld    :   0 ldd   :   0 ldi   :  27 lds   :   0 lpm   :   6 lsl   :   0 
+lsr   :   0 mov   :   2 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
+neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :   6 pop   :   3 
+push  :   3 rcall :   2 ret   :   3 reti  :   0 rjmp  :   6 rol   :   3 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 
 sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   0 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :   0 
 sub   :   0 subi  :   2 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 20 out of 113 (17.7%)
+Instructions used: 22 out of 113 (19.5%)
 
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0000c6    162     36    198   32768   0.6%
+[.cseg] 0x000000 0x0000d8    180     36    216   32768   0.7%
 [.dseg] 0x000100 0x000100      0      0      0    2048   0.0%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 

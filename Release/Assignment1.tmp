@@ -23,15 +23,20 @@
   <FILE>Assignment1.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <start><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>55</LINE></start>
-  <TABLE_7SEG><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>40</LINE></TABLE_7SEG>
-  <TABLE_KEYPAD><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>51</LINE></TABLE_KEYPAD>
-  <keypad_read><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>66</LINE></keypad_read>
-  <scan_keypad><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>97</LINE></scan_keypad>
-  <keypressed><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>93</LINE></keypressed>
-  <display_7seg><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>114</LINE></display_7seg>
-  <display><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>127</LINE></display>
-  <increment_group><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>146</LINE></increment_group>
-  <delay10ms><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>152</LINE></delay10ms>
+  <start><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>58</LINE></start>
+  <TABLE_7SEG><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>43</LINE></TABLE_7SEG>
+  <TABLE_KEYPAD><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>54</LINE></TABLE_KEYPAD>
+  <keypad_read><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>71</LINE></keypad_read>
+  <scan_keypad><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>102</LINE></scan_keypad>
+  <keypressed><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>98</LINE></keypressed>
+  <display_7seg><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>119</LINE></display_7seg>
+  <check_for_reduce><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>174</LINE></check_for_reduce>
+  <display><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>136</LINE></display>
+  <check_for_add><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>163</LINE></check_for_add>
+  <reduce_value><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>180</LINE></reduce_value>
+  <delay_working><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>195</LINE></delay_working>
+  <interval1><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>197</LINE></interval1>
+  <interval2><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>199</LINE></interval2>
+  <interval3><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>201</LINE></interval3>
  </LABELS>
 </ASSEMBLER_INFO>

@@ -15,14 +15,17 @@
 .INCLUDE "m328Pdef.inc"
 .equ PIN_OUT = 0b11111111 ; 0xFF
 .equ PIN_IN  = 0b00000000 ; 0x00
+.equ PORT_B_SETTING = 0b00000001 ; 0x01 Set 1 Out and 7 in
 .equ KEYPAD_PIN = 0b11111000 ; bit 0,1,2 will be input another will be output
 .equ INTERVAL_VAR = 100
 
 .def TEMP = r16
 .def DATA = r17
-.def INTERVAL_LOOP = r18
-.def DISTANCE = r19
-.def READ_RESULT = r20
+.def DISTANCE = r18
+.def READ_RESULT = r19
+.def delay1 = r20
+.def delay2 = r21
+.def delay3 = r22
 
 
 .macro BRANCH_IF_KEYPRESS
@@ -42,7 +45,7 @@ TABLE_7SEG:
 	.db		   0b00111111,   0b00000110 ;0,1
 	.db		   0b01011011,	 0b01001111 ;2,3
 	.db		   0b01100110,   0b01101101 ;4,5
-	.db		   0b01111101,	 0b01000111 ;6,7
+	.db		   0b01111101,	 0b00000111 ;6,7
 	.db		   0b01111111,	 0b01101111 ;8,9
 	.db		   0b01110111,	 0b01111100 ;A,B
 	.db		   0b00111001,	 0b01011110 ;C,D
@@ -58,6 +61,8 @@ start:
 	out DDRC,TEMP
 	ldi TEMP,KEYPAD_PIN
 	out DDRD,TEMP
+	ldi TEMP,PORT_B_SETTING
+	out DDRB,TEMP
 
     ldi DATA,0x00 ; Initial Data
 	ldi TEMP,0x00
@@ -112,22 +117,27 @@ scan_keypad:
 
 
 display_7seg:
+
+	
 	push ZL
 	push ZH
 	push r0  
 	; keep the current value of variable to stack because we want to use them 
 	; and it's value will be destroy
 
-	rcall display
+	rcall check_for_reduce
 	pop r0
 	pop ZH
 	pop ZL
+	
 	ret
+
 
 display:
 
 	ldi ZL,low(TABLE_7SEG*2) ; Load Value of 7seg Table to Register
 	ldi ZH,high(TABLE_7SEG*2)
+	rcall check_for_add
 	ldi TEMP, 0x0F ; Load 15 to Temp Variable
 	and DATA,TEMP ; make sure value is not over than 15 	
 	
@@ -140,20 +150,65 @@ display:
 	;ldi TEMP,0xFF
 	;out DDRC,TEMP
 	out PORTC, r0 ; Value of R0 Show at PortB
+
+	ldi TEMP,0x00
+	mov TEMP,r0
+	andi TEMP, 0b01000000 
+	rol TEMP ; msb will keep to Carry second one will be msb
+	rol TEMP ; Carry will go to LSB
+	rol TEMP ; The bit we want come to LSB
+	out PORTB, TEMP
 	ret
 
-	; Delay Method----------
-increment_group:
-	ldi INTERVAL_LOOP,INTERVAL_VAR
-	inc DATA
-	rcall delay10ms
-	rjmp display
+check_for_add:
+	;Read Value of PINB (PortB) at bit 1 if it be HIGH Add 1 immediate to data
 	
-delay10ms:
-	subi INTERVAL_LOOP,1
-	cpi	INTERVAL_LOOP,0x00
-	brne delay10ms
-	rjmp increment_group
+	ldi TEMP,PORT_B_SETTING
+	out DDRB,TEMP
+	in TEMP,PINB ;Read Value
+	andi TEMP, 0b00000110
+	ror TEMP ; Will go to LSB and BIT 1
+	add DATA,TEMP
+	ret
+
+check_for_reduce:
+	rcall display
+	cpi DATA,0x00
+	brne reduce_value
+	ret
+
+reduce_value:
+	rcall delay_working
+	rcall delay_working
+	rcall delay_working
+	rcall delay_working
+	rcall delay_working
+	rcall delay_working
+	rcall delay_working
+	rcall delay_working
+	dec DATA
+	rjmp check_for_reduce
+
+
+; Delay Method----------
+
+delay_working:
+	ldi delay1,8
+interval1:
+	ldi delay2,125
+interval2:
+	ldi delay3,250
+interval3:
+	dec delay3
+	nop
+	brne interval3
+
+	dec delay2
+	brne interval2
+
+	dec delay1
+	brne interval1
+	ret
 
 .DSEG ; data segment
 .ESEG ; EEPROM segment

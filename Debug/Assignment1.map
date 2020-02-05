@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  C:\A_Dev\Assignment1\Assignment1\main.asm Wed Feb 05 19:16:43 2020
+AVRASM ver. 2.2.7  C:\A_Dev\Assignment1\Assignment1\main.asm Wed Feb 05 22:30:38 2020
 
 
 EQU  SIGNATURE_000 0000001e
@@ -697,6 +697,7 @@ EQU  SPMRaddr     00000032
 EQU  INT_VECTORS_SIZE 00000034
 EQU  PIN_OUT      000000ff
 EQU  PIN_IN       00000000
+EQU  PORT_B_SETTING 00000001
 EQU  KEYPAD_PIN   000000f8
 EQU  INTERVAL_VAR 00000064
 DEF  TEMP         r16
@@ -707,10 +708,10 @@ DEF  READ_RESULT  r20
 CSEG start        00000013
 CSEG TABLE_7SEG   00000001
 CSEG TABLE_KEYPAD 00000009
-CSEG keypad_read  0000001a
-CSEG scan_keypad  0000003a
-CSEG keypressed   00000037
-CSEG display_7seg 00000048
-CSEG display      0000004f
-CSEG increment_group 0000005b
-CSEG delay10ms    0000005f
+CSEG keypad_read  0000001c
+CSEG scan_keypad  0000003c
+CSEG keypressed   00000039
+CSEG display_7seg 0000004a
+CSEG display      00000052
+CSEG increment_group 00000064
+CSEG delay10ms    00000068
