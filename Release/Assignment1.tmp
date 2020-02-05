@@ -23,10 +23,15 @@
   <FILE>Assignment1.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <TABLE_7SEG><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>32</LINE></TABLE_7SEG>
-  <start><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>43</LINE></start>
-  <display><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>49</LINE></display>
-  <increment_group><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>61</LINE></increment_group>
-  <delay10ms><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>67</LINE></delay10ms>
+  <start><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>55</LINE></start>
+  <TABLE_7SEG><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>40</LINE></TABLE_7SEG>
+  <TABLE_KEYPAD><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>51</LINE></TABLE_KEYPAD>
+  <keypad_read><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>66</LINE></keypad_read>
+  <scan_keypad><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>97</LINE></scan_keypad>
+  <keypressed><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>93</LINE></keypressed>
+  <display_7seg><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>114</LINE></display_7seg>
+  <display><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>127</LINE></display>
+  <increment_group><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>146</LINE></increment_group>
+  <delay10ms><FILE>C:\A_Dev\Assignment1\Assignment1\main.asm</FILE><LINE>152</LINE></delay10ms>
  </LABELS>
 </ASSEMBLER_INFO>
